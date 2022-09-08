@@ -1,10 +1,10 @@
-
-import './App.css';
+import "./App.css";
+import { HomePage } from "./HomePage";
 
 function App() {
   return (
     <div className="App">
-      <h1>GBL Bigdata </h1>
+      <HomePage />
     </div>
   );
 }
