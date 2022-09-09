@@ -8,3 +8,25 @@
 }
 
 td{   border: 1px solid black;}
+.btn{
+    padding:15px;
+    margin-right: 100%;
+    width:150px;
+    margin-top: 20px;
+}
+.inpt{
+    padding:10px;
+    /* margin-right: 100%; */
+    width:150px;
+    margin-top: 20px;
+}
+.priceInpt{
+    padding:8px;
+    margin-left: 10px;
+    width:150px;
+    margin-top: 20px;
+}
+.title{
+    margin-right: 80%; 
+    /* padding: 20px; */
+}
