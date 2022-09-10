@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Data } from "./Data";
 import "./styles.css";
+import { SearchProduct } from "./SearchProduct";
 
 export const HomePage = () => {
   const [productsData, setProductsData] = useState(Data);
-
   const [newProduct, setNewProduct] = useState({
     code: "",
     name: "",
@@ -14,7 +14,6 @@ export const HomePage = () => {
   const handleNewproduct = (e) => {
     const { name, value } = e.target;
     if (name === "price") {
-      console.log(name, value);
       setNewProduct((prev) => ({ ...prev, [name]: [{ 1: value }] }));
     } else {
       setNewProduct((prev) => ({ ...prev, [name]: value }));
@@ -48,6 +47,7 @@ export const HomePage = () => {
       </table>
     );
   };
+
   return (
     <>
       <h1>GBL Bigdata</h1>
@@ -85,6 +85,9 @@ export const HomePage = () => {
 
         <input type="submit" value="Add" />
       </form>
+      <h4 className="title">Search and Update Product</h4>
+
+      <SearchProduct />
     </>
   );
 };
