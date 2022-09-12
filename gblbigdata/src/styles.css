@@ -30,3 +30,14 @@ td{   border: 1px solid black;}
     margin-right: 80%; 
     /* padding: 20px; */
 }
+.updatePdctBtn{
+    padding: 20px;
+    margin-right: 50%;
+}
+.label{
+    width: 100%;
+}
+.serchMain{
+    /* text-align: "left";  */
+    margin-left: "200px" 
+}

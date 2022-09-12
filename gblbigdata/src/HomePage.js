@@ -6,6 +6,7 @@ import { SearchProduct } from "./SearchProduct";
 export const HomePage = () => {
   const [productsData, setProductsData] = useState(Data);
   const [newProduct, setNewProduct] = useState({
+    id: productsData[productsData.length - 1].id + 1,
     code: "",
     name: "",
     price: [{ 1: "" }],
@@ -60,34 +61,39 @@ export const HomePage = () => {
           setProductsData((prev) => [...prev, newProduct]);
         }}
       >
-        <input
-          className="inpt"
-          placeholder="enter product code"
-          value={newProduct.code}
-          name="code"
-          onChange={handleNewproduct}
-        />
-        <input
-          className="inpt"
-          placeholder="enter product name"
-          value={newProduct.name}
-          name="name"
-          onChange={handleNewproduct}
-        />
+        <div style={{ textAlign: "left" }}>
+          <input
+            className="inpt"
+            placeholder="enter product code"
+            value={newProduct.code}
+            name="code"
+            onChange={handleNewproduct}
+          />
+          <input
+            className="inpt"
+            placeholder="enter product name"
+            value={newProduct.name}
+            name="name"
+            onChange={handleNewproduct}
+          />
 
-        <input
-          className="priceInpt"
-          placeholder="enter product price"
-          value={Object.values(newProduct.price[0])[0]}
-          name="price"
-          onChange={handleNewproduct}
-        />
+          <input
+            className="priceInpt"
+            placeholder="enter product price"
+            value={Object.values(newProduct.price[0])[0]}
+            name="price"
+            onChange={handleNewproduct}
+          />
 
-        <input type="submit" value="Add" />
+          <input type="submit" value="Add" />
+        </div>
       </form>
       <h4 className="title">Search and Update Product</h4>
 
-      <SearchProduct />
+      <SearchProduct
+        productsData={productsData}
+        setProductsData={setProductsData}
+      />
     </>
   );
 };

@@ -1,49 +1,89 @@
-import React, { useState } from "react";
-import { Data } from "./Data";
+import React, { useEffect, useState } from "react";
 
-export const SearchProduct = () => {
+export const SearchProduct = (props) => {
   const [searchedProduct, setSearchedProduct] = useState({
+    id: 0,
     name: "",
     code: "",
     price: [],
   });
   const [inputText, setInputText] = useState("");
-  const [updatedProductIndex, setUpdatedProductIndex] = useState(0);
   const [searchedProductPriceArray, setSearchedProductPriceArray] = useState(
     []
   );
   const [isAddBuddle, setIisAddBuddle] = useState(false);
   const [newPriceBuddle, setNewPriceBuddle] = useState({ 0: 0 });
+  const [filteredData, setFilteredData] = useState([]);
 
   const inputTextHandler = (e) => {
     const lowercaseText = e.target.value.toLowerCase();
     setInputText(lowercaseText);
   };
 
-  const filteredData = Data.filter((el) => {
-    if (inputText === "") {
-      return null;
-    } else {
-      return el.name.toLowerCase().includes(inputText);
-    }
-  });
-  let newQuontity = Object.keys(newPriceBuddle)[0];
+  const FilterData = () => {
+    setFilteredData(() =>
+      props.productsData.filter((el) => {
+        if (inputText === "") {
+          return null;
+        } else {
+          return el.name.toLowerCase().includes(inputText);
+        }
+      })
+    );
+  };
+
+  useEffect(() => {
+    FilterData();
+  }, [inputText]);
+
+  const updateSearchedProduct = () => {
+    setSearchedProduct((prev) => ({
+      ...prev,
+      price: searchedProductPriceArray,
+    }));
+  };
+
+  const updateProductData = () => {
+    props.productsData.map((product, index) => {
+      if (index === searchedProduct.id) {
+        const temporyArr = [...props.productsData];
+        temporyArr[searchedProduct.id - 1] = searchedProduct;
+        props.setProductsData(temporyArr);
+      }
+    });
+    setInputText("");
+    setSearchedProduct({
+      id: 0,
+      name: "",
+      code: "",
+      price: [],
+    });
+  };
+
+  useEffect(() => {
+    updateSearchedProduct();
+  }, [searchedProductPriceArray]);
+
+  let newQuantity = Object.keys(newPriceBuddle)[0];
   let newPrice = Object.values(newPriceBuddle)[0];
   return (
-    <>
-      <input
-        onChange={inputTextHandler}
-        placeholder="search product"
-        className="btn"
-      />
+    <div className="serchMain">
+      <div style={{ display: "flex" }}>
+        <label className="label">search product to update</label>
+        <input
+          onChange={inputTextHandler}
+          placeholder="search product"
+          className="btn"
+        />
+      </div>
+
       {searchedProduct.name === "" ? (
         <ul>
-          {filteredData.map((item, index) => (
+          {filteredData.map((item) => (
             <li
               className="btn"
-              key={index}
+              key={item.id}
               onClick={() => {
-                setUpdatedProductIndex(index);
                 setSearchedProduct(item);
                 setSearchedProductPriceArray(item.price);
               }}
@@ -54,45 +94,48 @@ export const SearchProduct = () => {
         </ul>
       ) : (
         <>
-          <h4 className="btn">{searchedProduct.name}</h4>
-          <input
-            value={searchedProduct.name}
-            onChange={(e) => {
-              setSearchedProduct((prev) => ({
-                ...prev,
-                name: e.target.value,
-              }));
-            }}
-          />
-          <h4 className="btn">{searchedProduct.code}</h4>
-          <input
-            value={searchedProduct.code}
-            onChange={(e) => {
-              setSearchedProduct((prev) => ({
-                ...prev,
-                code: e.target.value,
-              }));
-            }}
-          />
-
+          <div style={{ textAlign: "left", display: "flex" }}>
+            <h4>name</h4>
+            <input
+              value={searchedProduct.name}
+              onChange={(e) => {
+                setSearchedProduct((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
+              }}
+            />
+          </div>
+          <div style={{ textAlign: "left", display: "flex" }}>
+            <h4>code</h4>
+            <input
+              value={searchedProduct.code}
+              onChange={(e) => {
+                setSearchedProduct((prev) => ({
+                  ...prev,
+                  code: e.target.value,
+                }));
+              }}
+            />
+          </div>
           <table>
             <thead>
               <tr>
-                <th>quontity</th>
+                <th>quantity</th>
                 <th>price</th>
               </tr>
             </thead>
             <tbody>
               {searchedProductPriceArray.map((priceBuddle, index) => {
-                let buddleQuontity = Object.keys(priceBuddle)[0];
-                let buddlePrice = Object.values(
+                let bunddleQuantity = Object.keys(priceBuddle)[0];
+                let bunddlePrice = Object.values(
                   searchedProductPriceArray[index]
                 )[0];
 
                 return (
                   <tr key={index}>
-                    <td>{buddleQuontity}</td>
-                    <td>{buddlePrice}</td>
+                    <td>{bunddleQuantity}</td>
+                    <td>{bunddlePrice}</td>
                     <td>
                       <button
                         onClick={() => {
@@ -111,49 +154,61 @@ export const SearchProduct = () => {
               })}
             </tbody>
           </table>
-          <button
-            onClick={() => {
-              setIisAddBuddle(true);
-            }}
-          >
-            + buddle
-          </button>
-          {isAddBuddle === true ? (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSearchedProductPriceArray((prev) => [
-                  ...prev,
-                  {
-                    [Object.keys(newPriceBuddle)[0]]: parseFloat(
-                      Object.values(newPriceBuddle)[0]
-                    ),
-                  },
-                ]);
+          <div style={{ textAlign: "left", display: "flex" }}>
+            <button
+              onClick={() => {
+                setIisAddBuddle(true);
               }}
             >
-              <input
-                placeholder="quontity"
-                value={newQuontity}
-                ß
-                onChange={(e) => {
-                  setNewPriceBuddle({
-                    [e.target.value]: [newPrice],
-                  });
+              + buddle
+            </button>
+            {isAddBuddle === true ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSearchedProductPriceArray((prev) => [
+                    ...prev,
+                    {
+                      [Object.keys(newPriceBuddle)[0]]: parseFloat(
+                        Object.values(newPriceBuddle)[0]
+                      ),
+                    },
+                  ]);
                 }}
-              />
-              <input
-                placeholder="price"
-                value={newPrice}
-                onChange={(e) => {
-                  setNewPriceBuddle({ [newQuontity]: e.target.value });
-                }}
-              />
-              <input type="submit" name="Add" />
-            </form>
-          ) : null}
+              >
+                <input
+                  placeholder="quantity"
+                  value={newQuantity}
+                  ß
+                  onChange={(e) => {
+                    setNewPriceBuddle({
+                      [e.target.value]: [newPrice],
+                    });
+                  }}
+                />
+                <input
+                  placeholder="price"
+                  value={newPrice}
+                  onChange={(e) => {
+                    setNewPriceBuddle({ [newQuantity]: e.target.value });
+                  }}
+                />
+                <input type="submit" name="Add" />
+              </form>
+            ) : null}
+          </div>
+          <div>
+            <button
+              className="updatePdctBtn"
+              onClick={() => {
+                updateProductData();
+              }}
+            >
+              Update Product
+            </button>
+          </div>
         </>
       )}
-    </>
+    </div>
   );
 };
