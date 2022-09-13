@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Data } from "./Data";
 import "./styles.css";
 import { SearchProduct } from "./SearchProduct";
+import { Order } from "./Oder";
 
 export const HomePage = () => {
   const [productsData, setProductsData] = useState(Data);
@@ -94,6 +95,7 @@ export const HomePage = () => {
         productsData={productsData}
         setProductsData={setProductsData}
       />
+      <Order productsData={productsData} />
     </>
   );
 };

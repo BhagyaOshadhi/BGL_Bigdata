@@ -28,16 +28,25 @@ td{   border: 1px solid black;}
 }
 .title{
     margin-right: 80%; 
+    color: rgb(26, 26, 126);
     /* padding: 20px; */
 }
 .updatePdctBtn{
     padding: 20px;
     margin-right: 50%;
 }
-.label{
-    width: 100%;
-}
+
 .serchMain{
     /* text-align: "left";  */
     margin-left: "200px" 
+}
+.OrderMain{
+    text-align: "left !important"; 
+}
+.tableTopic{
+    border: 1px solid black;
+    margin-right: 20px;
+    padding:10px;
+    width:100px;
+   
 }

@@ -45,7 +45,7 @@ export const SearchProduct = (props) => {
 
   const updateProductData = () => {
     props.productsData.map((product, index) => {
-      if (index === searchedProduct.id) {
+      if (product.id === searchedProduct.id) {
         const temporyArr = [...props.productsData];
         temporyArr[searchedProduct.id - 1] = searchedProduct;
         props.setProductsData(temporyArr);
@@ -69,7 +69,7 @@ export const SearchProduct = (props) => {
   return (
     <div className="serchMain">
       <div style={{ display: "flex" }}>
-        <label className="label">search product to update</label>
+        <label>search product to update</label>
         <input
           onChange={inputTextHandler}
           placeholder="search product"
