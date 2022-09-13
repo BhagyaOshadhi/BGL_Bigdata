@@ -7,7 +7,6 @@ import { Order } from "./Oder";
 export const HomePage = () => {
   const [productsData, setProductsData] = useState(Data);
   const [newProduct, setNewProduct] = useState({
-    id: productsData[productsData.length - 1].id + 1,
     code: "",
     name: "",
     price: [{ 1: "" }],
@@ -23,19 +22,32 @@ export const HomePage = () => {
   };
 
   const displayTable = () => {
-    const dataTable = productsData.map((product, index) => (
-      <tr key={index}>
-        <td>{product.code}</td>
-        <td>{product.name}</td>
-        <td>
-          {product.price.map((bundle, index) => (
-            <p key={index}>
-              {Object.keys(bundle)[0]} for ${Object.values(bundle)[0]}
-            </p>
-          ))}
-        </td>
-      </tr>
-    ));
+    const dataTable =
+      productsData &&
+      productsData.map((product, index) => (
+        <tr key={index}>
+          <td>{product.code}</td>
+          <td>{product.name}</td>
+          <td>
+            {product.price.map((bundle, index) => (
+              <p key={index}>
+                {Object.keys(bundle)[0]} for ${Object.values(bundle)[0]}
+              </p>
+            ))}
+          </td>
+
+          <button
+            style={{ padding: "15px" }}
+            onClick={() => {
+              setProductsData(
+                productsData.filter((prd, prdIndex) => prdIndex !== index)
+              );
+            }}
+          >
+            Delete
+          </button>
+        </tr>
+      ));
     return (
       <table>
         <thead>
@@ -59,6 +71,12 @@ export const HomePage = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          let lastProductIdx = productsData.length - 1;
+          if (lastProductIdx > 0) {
+            newProduct.id = productsData[lastProductIdx].id + 1;
+          } else {
+            newProduct.id = 1;
+          }
           setProductsData((prev) => [...prev, newProduct]);
         }}
       >
@@ -90,12 +108,15 @@ export const HomePage = () => {
         </div>
       </form>
       <h4 className="title">Search and Update Product</h4>
-
-      <SearchProduct
-        productsData={productsData}
-        setProductsData={setProductsData}
-      />
-      <Order productsData={productsData} />
+      {productsData && (
+        <>
+          <SearchProduct
+            productsData={productsData}
+            setProductsData={setProductsData}
+          />
+          <Order productsData={productsData} />
+        </>
+      )}
     </>
   );
 };
